@@ -1,24 +1,32 @@
-// playwright.config.js
-const { devices } = require('@playwright/test');
+import { defineConfig } from '@playwright/test';
 
-module.exports = {
-    testDir: './tests',
-    timeout: 30 * 1000,
-    reporter: [
-        // "list" acts as a spec-like reporter and prints readable results to console
-        ['list'],
-        // HTML reporter: output to playwright-report folder
-        ['html', { outputFolder: 'playwright-report', open: 'never' }]
-    ],
-    use: {
-        headless: true,
-        actionTimeout: 5000,
-        trace: 'on-first-retry'
-    },
+export default defineConfig({
+    timeout: 30000,
+
     projects: [
         {
-            name: 'chromium',
-            use: { ...devices['Desktop Chrome'] }
+            name: 'ui-tests',
+            use: {
+                headless: true,
+                baseURL: 'https://automationintesting.online',
+                viewport: { width: 1280, height: 720 },
+                actionTimeout: 10000,
+                screenshot: 'only-on-failure',
+                video: 'retain-on-failure',
+                trace: 'on-first-retry'
+            },
+            testMatch: ['tests/ui/**/*.spec.js']
+        },
+
+        {
+            name: 'api-tests',
+            use: {
+                baseURL: 'https://restful-booker.herokuapp.com',
+                extraHTTPHeaders: {
+                    'Content-Type': 'application/json'
+                }
+            },
+            testMatch: ['tests/api/**/*.spec.js']
         }
-    ]
-};
+    ],
+});
