@@ -22,10 +22,10 @@ test.describe('Booking Form – Validation Errors', () => {
             phone: ''
         });
 
-        await bookingPage.clickSecondReserveNow();
-        await bookingPage.waitForErrorContainerVisible()
+        await bookingPage.clickSecondReserveNow();   
+        await bookingPage.waitForValidationErrors();
 
-        const errors = await bookingPage.getErrorMessages();
+        const errors = await bookingPage.getValidationErrorMessages();
         expect(errors).toHaveLength(7);
 
         const expectedErrors = [

@@ -12,8 +12,7 @@ export default class BookingPage extends BasePage {
         this.secondReserveNowButton = page.locator('button.btn.btn-primary.w-100.mb-3');
         this.bookingCardTitle = page.locator('h2.card-title');
         this.priceSummaryTitle = page.locator('h3', { hasText: 'Price Summary' });
-        this.errorContainer = page.locator('div.alert.alert-danger');
-        this.errorItems = this.errorContainer.locator('li');
+        this.validationErrors = page.locator('text=/must not be empty|should not be blank|size must be between/i');
     }
 
     async clickFirstReserveNow() {
@@ -32,6 +31,13 @@ export default class BookingPage extends BasePage {
         await this.priceSummaryTitle.waitFor({ state: 'visible' });
     }
 
+    async waitForValidationErrors() {
+        await this.validationErrors.first().waitFor({
+            state: 'visible',
+            timeout: 15000
+        });
+    }
+
     async getFieldValues() {
         return {
             firstName: await this.firstNameInput.inputValue(),
@@ -41,12 +47,8 @@ export default class BookingPage extends BasePage {
         };
     }
 
-    async getErrorMessages() {
-        const errors = await this.errorItems.allTextContents();
+    async getValidationErrorMessages() {
+        const errors = await this.validationErrors.allTextContents();
         return errors.map(e => e.trim());
-    }
-
-    async waitForErrorContainerVisible() {
-        await this.errorContainer.waitFor({ state: 'visible' });
     }
 }
