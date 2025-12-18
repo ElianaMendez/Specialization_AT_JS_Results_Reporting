@@ -1,28 +1,47 @@
 import { test, expect } from '@playwright/test';
-import BookingPage from '../../pages/BookingPage.js';
 import HomePage from '../../pages/HomePage.js';
+import BookingPage from '../../pages/BookingPage.js';
 
+test.describe('Booking Form – Validation Errors', () => {
 
-test.describe('Booking Form Validation Tests', () => {
-
-    test('Should display error messages when submitting empty form', async ({ page }) => {
-        const bookingPage = new BookingPage(page);
+    test('Should display all validation errors when submitting an empty booking form', async ({ page }) => {
         const homePage = new HomePage(page);
+        const bookingPage = new BookingPage(page);
 
         await homePage.open();
-        await homePage.clickBookRoomButton();
-        await bookingPage.waitForCard();
-        await bookingPage.clickFirstReservationNowButton();
-        await bookingPage.waitPriceSummaryTitle();
+        await homePage.clickBookRoom();
+        await bookingPage.waitForBookingCard();
+        await bookingPage.clickFirstReserveNow();
+        await bookingPage.waitForPriceSummaryVisible();
 
-        const areFieldsEmpty = await bookingPage.validateFieldsAreEmpty();
-        expect(areFieldsEmpty).toBe(true);
+        const fieldValues = await bookingPage.getFieldValues();
+        expect(fieldValues).toEqual({
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: ''
+        });
 
-        await bookingPage.clickSecondReservationNowButton();
+        await bookingPage.clickSecondReserveNow();
+        await bookingPage.waitForErrorContainerVisible()
 
-        await bookingPage.validateErrorContainertoBeVisible();
+        const errors = await bookingPage.getErrorMessages();
+        expect(errors).toHaveLength(7);
 
-        const errorMessagesValid = await bookingPage.validateErrorMessages();
-        expect(errorMessagesValid).toBe(true);
-    });   
+        const expectedErrors = [
+            'size must be between 11 and 21',
+            'size must be between 3 and 30',
+            'must not be empty',
+            'size must be between 3 and 18',
+            'Firstname should not be blank',
+            'Lastname should not be blank'
+        ];
+
+        expectedErrors.forEach(expectedError => {
+            expect(errors).toContain(expectedError);
+        });
+
+        const mustNotBeEmptyCount = errors.filter(error => error === 'must not be empty').length;
+        expect(mustNotBeEmptyCount).toBe(2);
+    });
 });

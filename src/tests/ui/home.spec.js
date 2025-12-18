@@ -2,21 +2,20 @@ import { test, expect } from '@playwright/test';
 import HomePage from '../../pages/HomePage.js';
 import { contactFormData } from '../../utils/dataBuilder.js';
 
+test.describe('Home Page – Contact Form Functionality', () => {
 
-test.describe('Home Page UI', () => {
-
-    test('Contact form can be submitted', async ({ page }) => {
-        const contactForm = new HomePage(page);
+    test('should successfully submit the contact form with valid data', async ({ page }) => {
+        const homePage = new HomePage(page);
         const data = contactFormData();
 
-        await contactForm.open();
-        await contactForm.goToContactForm();
-        await contactForm.fillContactForm(data);
-        await contactForm.clikcSubmitContactFormButton();
-        await contactForm.waitForAlertMessageAppears();
+        await homePage.open();
+        await homePage.goToContactForm();
+        await homePage.fillContactForm(data);
+        await homePage.submitContactForm();
 
-        const alertSuccess = await contactForm.getTextAlertSuccess();
+        await expect(homePage.contactFormSuccessAlert).toBeVisible();
 
-        expect(alertSuccess).toContain('as soon as possible');
+        const successMessage = await homePage.getContactSuccessMessage();
+        expect(successMessage).toContain('as soon as possible');
     });
 });

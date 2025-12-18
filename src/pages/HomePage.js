@@ -10,45 +10,39 @@ export default class HomePage extends BasePage {
         this.phoneContactInput = page.locator('#phone');
         this.subjectContactInput = page.locator('#subject');
         this.messageContactInput = page.locator('#description');
-        this.submitButton = page.locator("button[class='btn btn-primary']");
-        this.secondBookRoomButton = page.locator('//a[contains(@href,"/reservation/2")]');
-        this.contactMenuLink = page.locator('//a[contains(@href,"/#contact")]');
-        this.contactFormSuccessAlert = page.locator('p').filter({ hasText: /as soon as possible/i });
+        this.submitContactButton = page.locator('//button[@class = "btn btn-primary"]');
+        this.contactSection = page.locator('#contact, form').first();
+        this.bookRoomButton = page.locator('a[href^="/reservation"]').first();
+        this.contactFormSuccessAlert = page.locator('p', { hasText: /as soon as possible/i });
     }
 
     async open() {
         await this.navigate('/');
     }
 
-    async clickSecondRoom() {
-        await this.click(this.secondBookRoomButton);
-    }
-
     async goToContactForm() {
-        await this.click(this.contactMenuLink);
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.nameContactInput.scrollIntoViewIfNeeded();
     }
 
-    async fillContactForm(data) {
-        await this.fill(this.nameContactInput, data.name);
-        await this.fill(this.emailContactInput, data.email);
-        await this.fill(this.phoneContactInput, data.phone);
-        await this.fill(this.subjectContactInput, data.subject);
-        await this.fill(this.messageContactInput, data.message);
+    async fillContactForm({ name, email, phone, subject, message }) {
+        await this.fill(this.nameContactInput, name);
+        await this.fill(this.emailContactInput, email);
+        await this.fill(this.phoneContactInput, phone);
+        await this.fill(this.subjectContactInput, subject);
+        await this.fill(this.messageContactInput, message);
     }
 
-    async clikcSubmitContactFormButton() {
-        await this.click(this.submitButton);
+    async submitContactForm() {
+        await this.click(this.submitContactButton);
     }
 
-    async waitForAlertMessageAppears() {
-        await this.waitForVisible(this.contactFormSuccessAlert, { timeout: 10000 });
-    }
-
-    async getTextAlertSuccess() {
+    async getContactSuccessMessage() {
         return await this.getText(this.contactFormSuccessAlert);
     }
 
-    async clickBookRoomButton() {
-        await this.click(this.secondBookRoomButton);
+    async clickBookRoom() {
+        await this.page.locator('.room-card').first().waitFor();
+        await this.click(this.bookRoomButton);
     }
 }
