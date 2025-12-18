@@ -7,24 +7,22 @@ export default class BasePage {
         await this.page.goto(path);
     }
 
-    async click(locator) {
-        await locator.waitFor({ state: 'visible', timeout: 15000 });
-        await locator.click();
+    async click(locator, options = {}) {
+        const {
+            force = false,
+            timeout = 20000
+        } = options;
+
+        await locator.scrollIntoViewIfNeeded();
+        await locator.waitFor({ state: 'visible', timeout });
+        await locator.click({ force });
     }
 
-    async fill(locator, text) {
-        await locator.fill(text);
+    async fill(locator, text, options = {}) {
+        await locator.fill(text, options);
     }
 
     async getText(locator) {
-        return (await locator.textContent()) || '';
-    }
-
-    async waitForVisible(locator, options = { timeout: 5000 }) {
-        await locator.waitFor({ state: 'visible', ...options });
-    }
-
-    async waitForHidden(locator, options = { timeout: 5000 }) {
-        await locator.waitFor({ state: 'hidden', ...options });
+        return (await locator.textContent())?.trim() || '';
     }
 }
