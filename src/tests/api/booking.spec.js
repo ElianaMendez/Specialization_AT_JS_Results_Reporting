@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-const apiClient = require('../../utils/apiClient');
+import apiClient from '../../utils/apiClient.js';
 
 test('Create and retrieve a booking', async ({ baseURL }) => {
     const payload = {

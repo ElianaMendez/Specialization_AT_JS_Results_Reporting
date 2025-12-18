@@ -1,4 +1,4 @@
-class BasePage {
+export default class BasePage {
     constructor(page) {
         this.page = page;
     }
@@ -8,6 +8,7 @@ class BasePage {
     }
 
     async click(locator) {
+        await locator.waitFor({ state: 'visible', timeout: 15000 });
         await locator.click();
     }
 
@@ -27,5 +28,3 @@ class BasePage {
         await locator.waitFor({ state: 'hidden', ...options });
     }
 }
-
-module.exports = BasePage;

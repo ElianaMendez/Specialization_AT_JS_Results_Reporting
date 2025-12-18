@@ -1,6 +1,6 @@
-const BasePage = require('./BasePage');
+import BasePage from './BasePage.js';
 
-class BookingPage extends BasePage {
+export default class BookingPage extends BasePage  {
     constructor(page) {
         super(page);
 
@@ -54,11 +54,10 @@ class BookingPage extends BasePage {
 
         const errorMessages = await this.listErrorAlert.allTextContents();
         const trimmedErrors = errorMessages.map(error => error.trim());
-
+/* 
         console.log('=== ERROR VALIDATION ===');
-        console.log(`Found ${trimmedErrors.length} errors:`, trimmedErrors);
+        console.log(`Found ${trimmedErrors.length} errors:`, trimmedErrors); */
 
-        // Lista de errores únicos que deben aparecer
         const requiredUniqueErrors = [
             'size must be between 11 and 21',
             'size must be between 3 and 30',
@@ -68,10 +67,8 @@ class BookingPage extends BasePage {
             'Lastname should not be blank'
         ];
 
-        // Verificar que tengamos 7 errores en total
         const hasCorrectCount = trimmedErrors.length === 7;
 
-        // Verificar que cada error requerido aparezca al menos una vez
         const allRequiredErrorsPresent = requiredUniqueErrors.every(expectedError => {
             const found = trimmedErrors.includes(expectedError);
             if (!found) {
@@ -80,17 +77,14 @@ class BookingPage extends BasePage {
             return found;
         });
 
-        // Verificar que "must not be empty" aparezca exactamente 2 veces
         const mustNotBeEmptyCount = trimmedErrors.filter(e => e === 'must not be empty').length;
         const hasTwoMustNotBeEmpty = mustNotBeEmptyCount === 2;
 
-        console.log('✓ Has 7 errors:', hasCorrectCount);
+/*         console.log('✓ Has 7 errors:', hasCorrectCount);
         console.log('✓ All required errors present:', allRequiredErrorsPresent);
         console.log('✓ "must not be empty" appears twice:', hasTwoMustNotBeEmpty);
         console.log('=== END VALIDATION ===');
-
+ */
         return hasCorrectCount && allRequiredErrorsPresent && hasTwoMustNotBeEmpty;
     }
 }
-
-module.exports = BookingPage;

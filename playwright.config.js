@@ -4,7 +4,7 @@ export default defineConfig({
     timeout: 30000,
 
     reporter: [
-        ['spec'], 
+        ['list'], 
         ['html', { outputFolder: 'test-results', open: 'never' }] 
     ],
 

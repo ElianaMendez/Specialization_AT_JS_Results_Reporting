@@ -1,4 +1,4 @@
-const { request } = require('@playwright/test');
+import { request } from '@playwright/test';
 
 class ApiClient {
     constructor() {
@@ -41,32 +41,6 @@ class ApiClient {
         const res = await this.context.get(`/booking/${id}`);
         return this._handleResponse(res);
     }
-
-/*     async updateBooking(id, payload, token, baseURL) {
-        await this.init(baseURL);
-        const res = await this.context.put(`/booking/${id}`, {
-            data: payload,
-            headers: { Cookie: `token=${token}` }
-        });
-        return this._handleResponse(res);
-    }
-
-    async deleteBooking(id, token, baseURL) {
-        await this.init(baseURL);
-        const res = await this.context.delete(`/booking/${id}`, {
-            headers: { Cookie: `token=${token}` }
-        });
-        return this._handleResponse(res);
-    }
-
-    async createToken(username, password, baseURL) {
-        await this.init(baseURL);
-        const res = await this.context.post('/auth', {
-            data: { username, password }
-        });
-        return this._handleResponse(res);
-    } */
-
 }
 
-module.exports = new ApiClient();
+export default new ApiClient();
