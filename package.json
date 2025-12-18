@@ -1,6 +1,7 @@
 {
   "name": "specialization_at_js_results_reporting",
   "version": "1.0.0",
+  "type": "module",
   "description": "Playwright UI + API tests for AutomationInTesting (UI) and Restful-Booker (API)",
   "main": "index.js",
   "directories": {

@@ -1,6 +1,6 @@
-const BasePage = require('./BasePage');
+import BasePage from './BasePage.js';
 
-class HomePage extends BasePage {
+export default class HomePage extends BasePage {
 
     constructor(page) {
         super(page);
@@ -52,5 +52,3 @@ class HomePage extends BasePage {
         await this.click(this.secondBookRoomButton);
     }
 }
-
-module.exports = HomePage;
