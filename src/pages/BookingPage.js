@@ -75,7 +75,7 @@ class BookingPage extends BasePage {
         const allRequiredErrorsPresent = requiredUniqueErrors.every(expectedError => {
             const found = trimmedErrors.includes(expectedError);
             if (!found) {
-                console.log(`❌ Missing error: "${expectedError}"`);
+                console.log(`Missing error: "${expectedError}"`);
             }
             return found;
         });

@@ -1,8 +1,17 @@
+# Dependencies
 node_modules/
+
+# Playwright reports
 playwright-report/
 test-results/
+
+# Playwright artifacts
 *.png
-traces/
-videos/
+*.webm
+trace.zip
+.last-run.json
+error-context.md
+
+# Environment / OS
 .env
 .DS_Store

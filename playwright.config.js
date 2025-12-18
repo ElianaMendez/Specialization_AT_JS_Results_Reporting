@@ -3,9 +3,15 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
     timeout: 30000,
 
+    reporter: [
+        ['spec'], 
+        ['html', { outputFolder: 'test-results', open: 'never' }] 
+    ],
+
     projects: [
         {
             name: 'ui-tests',
+            testMatch: ['tests/ui/**/*.spec.js'],
             use: {
                 headless: true,
                 baseURL: 'https://automationintesting.online',
@@ -14,19 +20,18 @@ export default defineConfig({
                 screenshot: 'only-on-failure',
                 video: 'retain-on-failure',
                 trace: 'on-first-retry'
-            },
-            testMatch: ['tests/ui/**/*.spec.js']
+            }
         },
 
         {
             name: 'api-tests',
+            testMatch: ['tests/api/**/*.spec.js'],
             use: {
                 baseURL: 'https://restful-booker.herokuapp.com',
                 extraHTTPHeaders: {
                     'Content-Type': 'application/json'
                 }
-            },
-            testMatch: ['tests/api/**/*.spec.js']
+            }
         }
-    ],
+    ]
 });

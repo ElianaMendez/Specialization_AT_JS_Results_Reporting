@@ -14,8 +14,6 @@ class HomePage extends BasePage {
         this.secondBookRoomButton = page.locator('//a[contains(@href,"/reservation/2")]');
         this.contactMenuLink = page.locator('//a[contains(@href,"/#contact")]');
         this.contactFormSuccessAlert = page.locator('p').filter({ hasText: /as soon as possible/i });
-        //this.contactFormSuccessAlert = page.locator('text=as soon as possible'); //page.getByText(/as soon as possible/i);
-        //this.contactFormSuccessAlert = page.locator('//p[contains(text(), "as soon as possible")]')
     }
 
     async open() {
