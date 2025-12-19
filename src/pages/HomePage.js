@@ -11,7 +11,7 @@ export default class HomePage extends BasePage {
         this.subjectContactInput = page.locator('#subject');
         this.messageContactInput = page.locator('#description');
         this.submitContactButton = page.locator('//button[@class = "btn btn-primary"]');
-        this.contactSection = page.locator('#contact, form').first();
+        this.roomCards = page.locator('.room-card');
         this.bookRoomButton = page.locator('a[href^="/reservation"]').first();
         this.contactFormSuccessAlert = page.locator('p', { hasText: /as soon as possible/i });
     }
@@ -42,7 +42,7 @@ export default class HomePage extends BasePage {
     }
 
     async clickBookRoom() {
-        await this.page.locator('.room-card').first().waitFor();
+        await this.roomCards.first().waitFor({ timeout: 30000 });
         await this.click(this.bookRoomButton);
     }
 }
