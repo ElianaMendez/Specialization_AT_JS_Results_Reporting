@@ -4,7 +4,7 @@ export default class BasePage {
     }
 
     async navigate(path = '/') {
-        await this.page.goto(path);
+        await this.page.goto(path, { waitUntil: 'networkidle' });
     }
 
     async click(locator, options = {}) {
