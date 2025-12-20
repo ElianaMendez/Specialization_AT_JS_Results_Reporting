@@ -4,7 +4,7 @@ export default class BasePage {
     }
 
     async navigate(path = '/') {
-        await this.page.goto(path, { waitUntil: 'networkidle' });
+        await this.page.goto(path, { waitUntil: 'domcontentloaded' });
     }
 
     async click(locator, options = {}) {
@@ -13,7 +13,7 @@ export default class BasePage {
             timeout = 20000
         } = options;
 
-        await locator.scrollIntoViewIfNeeded();
+        //await locator.scrollIntoViewIfNeeded();
         await locator.waitFor({ state: 'visible', timeout });
         await locator.click({ force });
     }

@@ -13,7 +13,8 @@ export default class HomePage extends BasePage {
         this.submitContactButton = page.locator('//button[@class = "btn btn-primary"]');
         this.roomCards = page.locator('.room-card');
         this.bookRoomButton = page.locator('a[href^="/reservation"]').first();
-        this.contactFormSuccessAlert = page.locator('p', { hasText: /as soon as possible/i });
+        this.contactFormSuccessAlert = page.locator('//p[contains(text(), "as soon as possible.")]');
+
     }
 
     async open() {
