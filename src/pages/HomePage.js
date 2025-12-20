@@ -13,6 +13,7 @@ export default class HomePage extends BasePage {
         this.submitContactButton = page.locator('//button[@class = "btn btn-primary"]');
         this.roomCards = page.locator('.room-card');
         this.bookRoomButton = page.locator('a[href^="/reservation"]').first();
+        this.contactFormSuccess = page.locator('(//div[@class="card-body p-4"])[2]');
         this.contactFormSuccessAlert = page.locator('//p[contains(text(), "as soon as possible.")]');
 
     }
@@ -43,7 +44,11 @@ export default class HomePage extends BasePage {
     }
 
     async clickBookRoom() {
-        await this.roomCards.first().waitFor({ timeout: 30000 });
+        await this.roomCards.first().waitFor({ timeout: 50000 });
         await this.click(this.bookRoomButton);
+    }
+
+    async waitForSuccessMessageApears() {
+        await this.contactFormSuccess.waitFor({ timeout: 30000 });
     }
 }
