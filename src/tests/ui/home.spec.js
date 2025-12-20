@@ -13,7 +13,7 @@ test.describe('Home Page – Contact Form Functionality', () => {
         await homePage.fillContactForm(data);
         await homePage.submitContactForm();
 
-        await expect(homePage.contactFormSuccessAlert).toBeVisible();
+        await homePage.waitForSuccessMessageApears();
 
         const successMessage = await homePage.getContactSuccessMessage();
         expect(successMessage).toContain('as soon as possible.');
