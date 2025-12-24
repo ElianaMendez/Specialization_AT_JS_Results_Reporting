@@ -13,7 +13,6 @@ export default class BasePage {
             timeout = 20000
         } = options;
 
-        //await locator.scrollIntoViewIfNeeded();
         await locator.waitFor({ state: 'visible', timeout });
         await locator.click({ force });
     }
@@ -23,6 +22,6 @@ export default class BasePage {
     }
 
     async getText(locator) {
-        return (await locator.textContent())?.trim() || '';
+        return (await locator.textContent({ timeout: 30000 }))?.trim() || '';
     }
 }
