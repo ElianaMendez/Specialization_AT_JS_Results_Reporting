@@ -12,13 +12,21 @@
     "playwright-core": "^1.57.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.57.0"
+    "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.57.0",
+    "eslint": "^9.39.2",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.4"
   },
   "scripts": {
     "test": "npx playwright test",
     "test:ui": "npx playwright test tests/ui --reporter=list,html",
     "test:api": "npx playwright test tests/api --reporter=list,html",
-    "show-report": "npx playwright show-report playwright-report"
+    "show-report": "npx playwright show-report playwright-report",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "Eliana",
