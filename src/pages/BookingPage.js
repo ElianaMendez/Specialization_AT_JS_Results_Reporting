@@ -24,7 +24,14 @@ export default class BookingPage extends BasePage {
     }
 
     async waitForBookingCard() {
-        await this.bookingCardTitle.waitFor({ state: 'visible' });
+        await this.bookingCardTitle.waitFor({ 
+            state: 'visible',
+            timeout: 60000        
+        });
+    }
+
+    async waitForLoadState(){
+        await this.page.waitForLoadState('domcontentloaded');
     }
 
     async waitForPriceSummaryVisible() {

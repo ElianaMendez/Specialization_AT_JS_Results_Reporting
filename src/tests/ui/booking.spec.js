@@ -10,6 +10,7 @@ test.describe('Booking Form – Validation Errors', () => {
 
         await homePage.open();
         await homePage.clickBookRoom();
+        await bookingPage.waitForLoadState();
         await bookingPage.waitForBookingCard();
         await bookingPage.clickFirstReserveNow();
         await bookingPage.waitForPriceSummaryVisible();
@@ -22,7 +23,7 @@ test.describe('Booking Form – Validation Errors', () => {
             phone: ''
         });
 
-        await bookingPage.clickSecondReserveNow();   
+        await bookingPage.clickSecondReserveNow();
         await bookingPage.waitForValidationErrors();
 
         const errors = await bookingPage.getValidationErrorMessages();
