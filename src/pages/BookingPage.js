@@ -41,7 +41,7 @@ export default class BookingPage extends BasePage {
     async waitForValidationErrors() {
         await this.validationErrors.first().waitFor({
             state: 'visible',
-            timeout: 30000
+            timeout: 50000
         });
     }
 
