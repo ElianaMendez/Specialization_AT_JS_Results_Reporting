@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    triggers {
+        cron('H */2 * * *')
+    }
+
+    stages {
+        stage('Install') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+
+        stage('Install Playwright') {
+            steps {
+                sh 'npx playwright install --with-deps'
+            }
+        }
+
+        stage('Run API Tests') {
+            steps {
+                sh 'npm run test:api'
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+        }
+    }
+}
