@@ -1,33 +1,58 @@
 pipeline {
     agent any
-
+    
     triggers {
         cron('H */2 * * *')
     }
-
+    
+    environment {
+        CI = 'true'
+        PATH = "/usr/local/bin:${env.PATH}"
+    }
+    
     stages {
-        stage('Install') {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Install dependencies') {
             steps {
                 sh 'npm ci'
             }
         }
-
+        
         stage('Install Playwright') {
             steps {
-                sh 'npx playwright install'
+                sh 'npx playwright install chromium'
             }
         }
-
+        
         stage('Run API Tests') {
             steps {
                 sh 'npm run test:api'
             }
         }
+        
+        stage('Publish HTML Report') {
+            steps {
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'playwright-report',
+                    reportFiles: 'index.html',
+                    reportName: 'API Test Report',
+                    reportTitles: 'Playwright API Tests'
+                ])
+            }
+        }
     }
-
+    
     post {
         always {
-            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true, allowEmptyArchive: true
         }
     }
 }

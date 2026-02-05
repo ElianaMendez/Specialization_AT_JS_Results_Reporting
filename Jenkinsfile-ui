@@ -1,44 +1,59 @@
 pipeline {
-    agent {
-        docker {
-            image 'mcr.microsoft.com/playwright:v1.42.1-jammy'
-            args '--ipc=host'
-        }
-    }
-
+    agent any
+    
     triggers {
         cron('H */2 * * *')
     }
-
+    
     environment {
         CI = 'true'
         HEADLESS = 'true'
+        PATH = "/usr/local/bin:${env.PATH}"
     }
-
+    
     stages {
-
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-
+        
         stage('Install dependencies') {
             steps {
                 sh 'npm ci'
             }
         }
-
+        
+        stage('Install Playwright Browsers') {
+            steps {
+                sh 'npx playwright install --with-deps chromium'
+            }
+        }
+        
         stage('Run UI tests') {
             steps {
                 sh 'npm run test:ui'
             }
         }
+        
+        stage('Publish HTML Report') {
+            steps {
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'playwright-report',
+                    reportFiles: 'index.html',
+                    reportName: 'UI Test Report',
+                    reportTitles: 'Playwright UI Tests'
+                ])
+            }
+        }
     }
-
+    
     post {
         always {
-            archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
+            archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true, allowEmptyArchive: true
         }
     }
 }
