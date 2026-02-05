@@ -34,21 +34,7 @@ pipeline {
             steps {
                 sh 'npm run test:ui'
             }
-        }
-        
-        stage('Publish HTML Report') {
-            steps {
-                publishHTML([
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'playwright-report',
-                    reportFiles: 'index.html',
-                    reportName: 'UI Test Report',
-                    reportTitles: 'Playwright UI Tests'
-                ])
-            }
-        }
+        }      
     }
     
     post {

@@ -33,21 +33,7 @@ pipeline {
             steps {
                 sh 'npm run test:api'
             }
-        }
-        
-        stage('Publish HTML Report') {
-            steps {
-                publishHTML([
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'playwright-report',
-                    reportFiles: 'index.html',
-                    reportName: 'API Test Report',
-                    reportTitles: 'Playwright API Tests'
-                ])
-            }
-        }
+        }      
     }
     
     post {
