@@ -20,10 +20,15 @@ pipeline {
 
         stage('Run UI Tests') {
             steps {
-                sh 'npm run test:ui'
+                script {
+                    if (params.SHOW_BROWSER) {
+                        sh 'npm run test:ui --headed'
+                    } else {
+                        sh 'npm run test:ui'
+                    }
+                }
             }
         }
-    }
 
     post {
         always {
