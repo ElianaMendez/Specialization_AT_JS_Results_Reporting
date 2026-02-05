@@ -1,24 +1,35 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'mcr.microsoft.com/playwright:v1.42.1-jammy'
+            args '--ipc=host'
+        }
+    }
 
     triggers {
         cron('H */2 * * *')
     }
 
+    environment {
+        CI = 'true'
+        HEADLESS = 'true'
+    }
+
     stages {
-        stage('Install') {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install dependencies') {
             steps {
                 sh 'npm ci'
             }
         }
 
-        stage('Install Playwright') {
-            steps {
-                sh 'npx playwright install'
-            }
-        }
-
-        stage('Run API Tests') {
+        stage('Run UI tests') {
             steps {
                 sh 'npm run test:ui'
             }
@@ -27,7 +38,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true 
+            archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
         }
     }
 }
